@@ -3,12 +3,14 @@ import java.util.Scanner;
 public class BancoAzul {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         int deposito = 0;
         double saldo = 0;
         String extrato = "";
         int numeroSaques = 0;
         int limiteSaques = 3;
         double limiteValor = 500;
+        
         
         while(true) {
             System.out.println("=====================");
@@ -21,9 +23,10 @@ public class BancoAzul {
 
             String menu = scanner.nextLine();
 
-            if(menu == "d") {
-                System.out.println("Informe o valor do depósito: R$ ");
+            if(menu.equals("d")) {
+                System.out.printf("Informe o valor do depósito: R$ ");
                 double valor = scanner.nextDouble();
+                scanner.nextLine();
                 if(valor > 0) {
                     saldo += valor;
                     extrato += "Depósito de R$" + valor + "realizado\n";
@@ -31,9 +34,47 @@ public class BancoAzul {
                 } else {
                     System.out.println("@@@  Operação falhou! O valor informado é inválido!  @@@");
                 }
-            }
-        }
-         scanner.close();
+            } else if(menu.equals("s")) {
+                    System.out.println("Informe o valor do saque R$: ");
+                    double valor = scanner.nextDouble();
+                    boolean excedeuSaque = numeroSaques >= limiteSaques;
+                    boolean excedeuLimiteValor = valor > limiteValor;
+                    boolean excedeuSaldo = valor > saldo;
+                    if (excedeuSaldo) {
+                        System.out.println("@@@ Operação Falhou! Você não tem saldo suficiente! @@@");                      
+                    } else if (excedeuSaldo) {
+                        System.out.println("@@@ Operação Falhou! O número máximo de saques foi excedido! @@@");
+                    } else if(excedeuLimiteValor) {
+                        System.out.println("@@@ Operação Falhou! O valor do saque excede o limite! @@@");
+                    } else if(valor > 0) {
+                        saldo -= valor;
+                        extrato += "Deposito de R$" + valor + "\n";
+                        System.out.println("Saque de " + valor + "realizado com sucesso");
+                        numeroSaques++;
+                    } else {
+                        System.out.println("@@@  Operação falhou! O valor informado é inválido!  @@@");
+                    } 
+            } else if(menu.equals("e")) {
+                       if(extrato == "") {
+                       System.out.println("Não foram realizadas movimentações");
+                        } else {
+                       System.out.println(extrato);
+                     } 
+            }else if(menu.equals("q")) {
+                        System.out.println("Obrigado pela preferência !!!");
+                        break;                
+                     } else {
+                        System.out.println("@@@Opção inválida, por favor selecione a opção correta!@@@");
+                     }                   
+                    }
+
+                
+            
+            scanner.close();
+
+        
+
+
     }
 }
 
@@ -44,7 +85,8 @@ public class BancoAzul {
 // Saque
 // Permitir no máximo 3 saques diários.
 // Cada saque pode ter o valor máximo de R$ 500,00.
-// O sistema deve bloquear saques se o usuário não tiver saldo suficiente, exibindo mensagem: `Saldo insuficiente para saque.`
+// O sistema deve bloquear saques se o usuário não tiver saldo suficiente,
+// exibindo mensagem: `Saldo insuficiente para saque.`
 // Os saques devem ser armazenados e aparecer no extrato
 
 // Extrato
